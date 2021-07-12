@@ -26,27 +26,30 @@
 <div class="container">
     <h4>摇号结果: {{ randomNum }}</h4>
     <div class="row">
-        <h3>销控表</h3>
-        <div class="table-responsive">
+        <h3 style="margin-left: 50%">销控表</h3>
+        <div >
             {% for item in building_data_view %}
-            <table class="table table-bordered choose_tab" style="display:inline; margin: 20px" id="building_tab">
+            <div style="float:left; margin: 20px">
+            <table class="table table-bordered choose_tab" id="building_tab">
                 <tr>
-                    <td colspan="6">{{ item.building }} 幢</td>
+                    <td colspan="6" style="text-align:center;">{{ item.building }} 幢</td>
                 </tr>
                 <tr>
                     {% for unit_item in item.unit %}
-                    <td colspan="2">{{ unit_item }} 单元</td>
+                    <td colspan="2" style="text-align:center;">{{ unit_item }} 单元</td>
                     {% endfor %}
                 </tr>
                 {% for floor_item in item.data %}
                 <tr>
                     {% for xx in floor_item %}
-                    <td width="50px" class="floor">{{xx}}</td>
+                    <td width="55px" class="floor" style="text-align:center;">{{xx}}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
             </table>
+            </div>
             {% endfor %}
+            </div>
         </div>
 
     </div>
