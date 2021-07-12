@@ -1,16 +1,18 @@
 import random
 
+building = [1, 2, 3, 4]
+unit = [[13, 12, 11], [10, 9, 8], [7], [6, 5]]
+room = [2, 1]
+floor = {13: [2, 18], 12: [2, 18], 11: [1, 18], 10: [1, 18], 9: [1, 18], 8: [1, 18], 7: [1, 18], 6: [1, 18],
+         5: [1, 18]}
+building_weight = {1: 10, 2: 10, 3: 1, 4: 1}
+unit_weight = [{13: 12, 12: 14, 11: 16}, {10: 10, 9: 18, 8: 20}, {7: 8}, {6: 6, 5: 4}]
+floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 27, 6: 28, 7: 30, 8: 31, 9: 32, 10: 33, 11: 34, 12: 35, 13: 33, 14: 34,
+                15: 38, 16: 39, 17: 30, 18: 25}
+
 def simulation():
     randomNum = random.randint(1, 320)
-    building = [1, 2, 3, 4]
-    unit = [[13, 12, 11], [10, 9, 8], [7], [6, 5]]
-    room = [2, 1]
-    floor = {13: [2, 18], 12: [2, 18], 11: [1, 18], 10: [1, 18], 9: [1, 18], 8: [1, 18], 7: [1, 18], 6: [1, 18],
-            5: [1, 18]}
-    building_weight = {1: 10, 2: 10, 3: 2, 4: 1}
-    unit_weight = [{13: 12, 12: 14, 11: 16}, {10: 10, 9: 18, 8: 20}, {7: 8}, {6: 6, 5: 4}]
-    floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 27, 6: 28, 7: 40, 8: 41, 9: 42, 10: 43, 11: 44, 12: 45, 13: 43, 14: 44,
-                   15: 48, 16: 49, 17: 50, 18: 25}
+    # randomNum = 310
     building_data = []
     for i in range(len(building)):
         unit_item = unit[i]
@@ -35,22 +37,35 @@ def simulation():
             unit_data.append(room_data)
         building_data.append(unit_data)
     for x in range(randomNum):
-        building_random = random_weight(building_weight)
-        building_units = unit[building_random - 1]
-        unit_weight_item = unit_weight[building_random - 1]
-        unit_random = random_weight(unit_weight_item);
-        unit_id = 0
-        for y in range(len(building_units)):
-            if unit_random == building_units[y]:
-                unit_id = y
-                break
-        floor_start = floor[unit_random][0]
-        floor_random = random_weight(floor_weight)
-        while floor_random == 1 and floor_start == 2:
-            floor_random = random_weight(floor_weight)
-        floor_random = 18 - floor_random
-        building_data[building_random - 1][unit_id][random.randint(0, 1)][floor_random]['floor_status'] = 2
+        while True:
+            result = set_building(building_data)
+            if result == 1:
+                break;
     return randomNum, building_data
+
+
+def set_building(building_data):
+    building_random = random_weight(building_weight)
+    building_units = unit[building_random - 1]
+    unit_weight_item = unit_weight[building_random - 1]
+    unit_random = random_weight(unit_weight_item);
+    unit_id = 0
+    for y in range(len(building_units)):
+        if unit_random == building_units[y]:
+            unit_id = y
+            break
+    floor_start = floor[unit_random][0]
+    floor_random = random_weight(floor_weight)
+    while floor_random == 1 and floor_start == 2:
+        floor_random = random_weight(floor_weight)
+    floor_random = 18 - floor_random
+    room_num = random.randint(0, 1)
+    if building_data[building_random - 1][unit_id][room_num][floor_random]['floor_status'] == 1:
+        building_data[building_random - 1][unit_id][room_num][floor_random]['floor_status'] = 2
+        return 1
+    else:
+        return 0
+
 
 def random_weight(weight_data):
     _total = sum(weight_data.values())  # 权重求和
