@@ -1,18 +1,16 @@
-#!/usr/bin/env python
 import random
 
-
-def main():
+def simulation():
     randomNum = random.randint(1, 320)
     building = [1, 2, 3, 4]
     unit = [[13, 12, 11], [10, 9, 8], [7], [6, 5]]
     room = [2, 1]
     floor = {13: [2, 18], 12: [2, 18], 11: [1, 18], 10: [1, 18], 9: [1, 18], 8: [1, 18], 7: [1, 18], 6: [1, 18],
             5: [1, 18]}
-    building_weight = {1: 5, 2: 5, 3: 2, 4: 1}
+    building_weight = {1: 10, 2: 10, 3: 2, 4: 1}
     unit_weight = [{13: 12, 12: 14, 11: 16}, {10: 10, 9: 18, 8: 20}, {7: 8}, {6: 6, 5: 4}]
-    floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 7, 6: 8, 7: 10, 8: 11, 9: 12, 10: 13, 11: 14, 12: 15, 13: 13, 14: 14,
-                   15: 18, 16: 19, 17: 20, 18: 5}
+    floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 27, 6: 28, 7: 40, 8: 41, 9: 42, 10: 43, 11: 44, 12: 45, 13: 43, 14: 44,
+                   15: 48, 16: 49, 17: 50, 18: 25}
     building_data = []
     for i in range(len(building)):
         unit_item = unit[i]
@@ -27,10 +25,12 @@ def main():
                 for l in range(floor_set[1] - floor_set[0] + 1):
                     floor_map = {}
                     floor_map["id"] = start + l
-                    floor_map["buildind"] = i
-                    floor_map["unit"] = j
-                    floor_map["status"] = 1
+                    floor_map["buildind"] = i + 1
+                    floor_map["unit"] = unit_num
+                    floor_map["room"] = k + 1
+                    floor_map["floor_status"] = 1
                     floor_data.append(floor_map)
+                floor_data = floor_data[::-1]
                 room_data.append(floor_data)
             unit_data.append(room_data)
         building_data.append(unit_data)
@@ -48,10 +48,9 @@ def main():
         floor_random = random_weight(floor_weight)
         while floor_random == 1 and floor_start == 2:
             floor_random = random_weight(floor_weight)
-        if floor_start == 2:
-            floor_random -= 1
-        building_data[building_random - 1][unit_id][random.randint(0, 1)][floor_random - 1]['status'] = 2
-    print(building_data)
+        floor_random = 18 - floor_random
+        building_data[building_random - 1][unit_id][random.randint(0, 1)][floor_random]['floor_status'] = 2
+    return randomNum, building_data
 
 def random_weight(weight_data):
     _total = sum(weight_data.values())  # 权重求和
@@ -68,7 +67,3 @@ def random_weight(weight_data):
             _ret = _k
             break
     return _ret
-
-
-if __name__ == '__main__':
-    main()

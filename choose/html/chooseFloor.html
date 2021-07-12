@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>模拟选房</title>
+    <!-- 引入 Bootstrap -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../statics/css/chooseFloor.css">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                <span class="sr-only">>模拟选房</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">>模拟选房</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <h4>摇号结果: {{ randomNum }}</h4>
+    <div class="row">
+        <h3>销控表</h3>
+        <div class="table-responsive">
+            {% for item in building_data_view %}
+            <table class="table table-bordered choose_tab" style="display:inline; margin: 20px" id="building_tab">
+                <tr>
+                    <td colspan="6">{{ item.building }} 幢</td>
+                </tr>
+                <tr>
+                    {% for unit_item in item.unit %}
+                    <td colspan="2">{{ unit_item }} 单元</td>
+                    {% endfor %}
+                </tr>
+                {% for floor_item in item.data %}
+                <tr>
+                    {% for xx in floor_item %}
+                    <td width="50px" class="floor">{{xx}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $('[id^=building_tab]').find('td').each(function () {
+            if ($(this).attr('class') == "floor") {
+                className = "danger"
+                floor_status = eval('(' + $(this).text() + ')').floor_status
+                floor_id = eval('(' + $(this).text() + ')').id
+                if (floor_id) {
+                    $(this).html(floor_id)
+                }else {
+                    $(this).html('')
+                }
+                if (floor_status == 2) {
+                    $(this).addClass(className)
+                }
+            }
+        });
+    });
+
+</script>
+</html>
