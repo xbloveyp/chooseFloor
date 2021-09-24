@@ -1,17 +1,29 @@
 import random
 
-building = [1, 2, 3, 4]
-unit = [[13, 12, 11], [10, 9, 8], [7], [6, 5]]
+# building = [1, 2, 3, 4]
+# unit = [[13, 12, 11], [10, 9, 8], [7], [6, 5]]
+# room = [2, 1]
+# floor = {13: [2, 18], 12: [2, 18], 11: [1, 18], 10: [1, 18], 9: [1, 18], 8: [1, 18], 7: [1, 18], 6: [1, 18],
+#          5: [1, 18]}
+# building_weight = {1: 10, 2: 10, 3: 1, 4: 1}
+# unit_weight = [{13: 12, 12: 14, 11: 16}, {10: 10, 9: 18, 8: 20}, {7: 8}, {6: 6, 5: 4}]
+# floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 27, 6: 28, 7: 30, 8: 31, 9: 32, 10: 33, 11: 34, 12: 35, 13: 33, 14: 34,
+#                 15: 38, 16: 39, 17: 30, 18: 25}
+
+building = [1, 2, 3, 4, 5, 6, 7]
+unit = [[1, 2, 3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16, 17]]
 room = [2, 1]
-floor = {13: [2, 18], 12: [2, 18], 11: [1, 18], 10: [1, 18], 9: [1, 18], 8: [1, 18], 7: [1, 18], 6: [1, 18],
-         5: [1, 18]}
-building_weight = {1: 10, 2: 10, 3: 1, 4: 1}
-unit_weight = [{13: 12, 12: 14, 11: 16}, {10: 10, 9: 18, 8: 20}, {7: 8}, {6: 6, 5: 4}]
-floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 27, 6: 28, 7: 30, 8: 31, 9: 32, 10: 33, 11: 34, 12: 35, 13: 33, 14: 34,
-                15: 38, 16: 39, 17: 30, 18: 25}
+floor = {1: [1, 14], 2: [1, 14], 3: [1, 14], 4: [1, 14], 5: [1, 14], 6: [1, 14], 7: [1, 14], 8: [1, 14], 9: [1, 14],
+         10: [1, 14], 11: [1, 14], 12: [1, 14]
+    , 13: [1, 14], 14: [1, 14], 15: [1, 14], 16: [1, 14], 17: [1, 14]}
+building_weight = {1: 5, 2: 1, 3: 4, 4: 1, 5: 1, 6: 1, 7: 1}
+unit_weight = [{1: 10, 2: 10, 3: 10, 4: 10}, {5: 10, 6: 10}, {7: 10, 8: 10}, {9: 10, 10: 10}, {11: 10, 12: 10},
+               {13: 10, 14: 10}, {15: 10, 16: 10, 17: 10}]
+floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 20, 8: 21, 9: 22, 10: 23, 11: 24, 12: 25, 13: 30, 14: 22}
+high_floor = 14
 
 def simulation():
-    randomNum = random.randint(1, 320)
+    randomNum = random.randint(1, 466)
     # randomNum = 310
     building_data = []
     for i in range(len(building)):
@@ -41,7 +53,7 @@ def simulation():
             result = set_building(building_data)
             if result == 1:
                 break;
-    return randomNum, building_data
+    return randomNum, building_data, high_floor
 
 
 def set_building(building_data):
@@ -58,7 +70,7 @@ def set_building(building_data):
     floor_random = random_weight(floor_weight)
     while floor_random == 1 and floor_start == 2:
         floor_random = random_weight(floor_weight)
-    floor_random = 18 - floor_random
+    floor_random = high_floor - floor_random
     room_num = random.randint(0, 1)
     if building_data[building_random - 1][unit_id][room_num][floor_random]['floor_status'] == 1:
         building_data[building_random - 1][unit_id][room_num][floor_random]['floor_status'] = 2

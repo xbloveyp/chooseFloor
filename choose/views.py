@@ -5,19 +5,19 @@ from choose.simulation import simulation
 
 
 def index(request):
-    randomNum, building_data = simulation()
+    randomNum, building_data, high_floor = simulation()
     building_data_view = []
     for i in range(len(building_data)):
         item = building_data[i]
         building_item_map = {}
         building_item = []
-        for x in range(18):
+        for x in range(high_floor):
             unit_item_set = []
             building_floor_item = []
             for unit_item in item:
                 for y in range(len(unit_item)):
                     room_item = unit_item[y]
-                    if x == 17 and y == 0:
+                    if x == high_floor - 1 and y == 0:
                         unit_item_set.append(room_item[x-1]['unit'])
                     if x < len(room_item):
                         building_floor_item.append(room_item[x])
