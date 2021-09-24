@@ -23,5 +23,4 @@ urlpatterns = [
     path('', views.index),
     path('chooseFloor/', views.index),
     path('setFloor/', views.setFloor),
-    path('chooseFloor/setFloor/', views.setFloor),
 ]
