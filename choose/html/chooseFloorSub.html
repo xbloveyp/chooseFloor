@@ -1,0 +1,59 @@
+<div class="container" id="container">
+    <h4 id="result">摇号结果: {{ randomNum }}</h4>
+    <div>
+        <input type="text" aria-label="输入摇号结果" id="floor">
+        <button type="button" onclick="setFloor()">设置摇号结果</button>
+    </div>
+    <div class="row">
+        <h3 style="margin-left: 50%">销控表</h3>
+        <div >
+            {% for item in building_data_view %}
+            <div style="float:left; margin: 20px">
+            <table class="table table-bordered choose_tab" id="building_tab">
+                <tr>
+                    <td colspan="8" style="text-align:center;">{{ item.building }} 幢</td>
+                </tr>
+                <tr>
+                    {% for unit_item in item.unit %}
+                    <td colspan="2" style="text-align:center;">{{ unit_item }} 单元</td>
+                    {% endfor %}
+                </tr>
+                {% for floor_item in item.data %}
+                <tr>
+                    {% for xx in floor_item %}
+                    <td width="55px" class="floor" style="text-align:center;">{{xx}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('[id^=building_tab]').find('td').each(function () {
+            if ($(this).attr('class') == "floor") {
+                className = "danger"
+                floor_status = eval('(' + $(this).text() + ')').floor_status
+                floor_id = eval('(' + $(this).text() + ')').id
+                if (floor_id) {
+                    $(this).html(floor_id)
+                }else {
+                    $(this).html('')
+                }
+                if (floor_status == 2) {
+                    $(this).addClass(className)
+                }
+            }
+        });
+    });
+
+</script>

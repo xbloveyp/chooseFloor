@@ -22,8 +22,17 @@ unit_weight = [{1: 10, 2: 10, 3: 10, 4: 10}, {5: 10, 6: 10}, {7: 10, 8: 10}, {9:
 floor_weight = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 20, 8: 25, 9: 27, 10: 30, 11: 34, 12: 35, 13: 40, 14: 22}
 high_floor = 14
 
-def simulation():
-    randomNum = random.randint(1, 466)
+def simulation(request):
+    max_num = 476
+    if bool(request.POST):
+        setting_floor = request.POST['floor']
+        if setting_floor is not None:
+            if int(setting_floor) > max_num:
+                randomNum = max_num
+            else:
+                randomNum = int(setting_floor)
+    else:
+        randomNum = random.randint(1, max_num)
     # randomNum = 310
     building_data = []
     for i in range(len(building)):

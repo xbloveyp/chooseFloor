@@ -23,37 +23,15 @@
         </div>
     </div>
 </nav>
-<div class="container">
-    <h4>摇号结果: {{ randomNum }}</h4>
-    <div class="row">
-        <h3 style="margin-left: 50%">销控表</h3>
-        <div >
-            {% for item in building_data_view %}
-            <div style="float:left; margin: 20px">
-            <table class="table table-bordered choose_tab" id="building_tab">
-                <tr>
-                    <td colspan="8" style="text-align:center;">{{ item.building }} 幢</td>
-                </tr>
-                <tr>
-                    {% for unit_item in item.unit %}
-                    <td colspan="2" style="text-align:center;">{{ unit_item }} 单元</td>
-                    {% endfor %}
-                </tr>
-                {% for floor_item in item.data %}
-                <tr>
-                    {% for xx in floor_item %}
-                    <td width="55px" class="floor" style="text-align:center;">{{xx}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-            </div>
-            {% endfor %}
-            </div>
-        </div>
-
+<div class="container" id="container">
+    <h4 id="result">摇号结果: {{ randomNum }}</h4>
+    <div>
+        <input type="text" aria-label="输入摇号结果" id="floor">
+        <button type="button" onclick="setFloor()">设置摇号结果</button>
     </div>
 </div>
+<!--{%block sub%}-->
+<!--{%endblock sub%}-->
 <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 <!-- 包括所有已编译的插件 -->
@@ -76,7 +54,25 @@
                 }
             }
         });
+        setFloor()
     });
+    function setFloor(){
+            var floor = $("#floor").val();
+            if (floor != "") {
+                var data = {'floor': floor}
+            }
+            $('#result').html("摇号结果: " + floor);
+            //ajax返回的数据 格式化成json类型
+            $.ajax({
+                type: "POST",
+                url: "/setFloor/",
+                data: data,
+                datetyp: 'JSON',
+                success: function (result) {
+                    $('#container').html(result);
+                }
+            })
+        }
 
 </script>
 </html>
